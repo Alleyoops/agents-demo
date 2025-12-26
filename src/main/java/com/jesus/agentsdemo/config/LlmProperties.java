@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
- * 获取llm配置文件内容
+ * 获取llm配置文件内容（需要手动new模型实例时才可能用到）
  */
 @Component
 @ConfigurationProperties(prefix = "llm")

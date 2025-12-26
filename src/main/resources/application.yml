@@ -4,6 +4,12 @@ spring:
   ai:
     dashscope:
       api-key: ${AI_DASHSCOPE_API_KEY}
+    openai:
+      api-key: ${DEEPSEEK_API_KEY} #openai依赖默认自动配置deepseek
+      base-url: ${DEEPSEEK_BASE_URL}
+      chat:
+        options:
+          model: deepseek-chat
 
 
 # LLM 提供商配置
