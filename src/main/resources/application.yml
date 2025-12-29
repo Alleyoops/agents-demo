@@ -4,12 +4,19 @@ spring:
   ai:
     dashscope:
       api-key: ${AI_DASHSCOPE_API_KEY}
+      chat:
+        options:
+          temperature: 0.5
+          max-tokens: 1000
+          model: qwen-plus # DashScopeChatModel.DEFAULT_MODEL_NAME
     openai:
-      api-key: ${DEEPSEEK_API_KEY} #openai依赖默认自动配置deepseek
+      api-key: ${DEEPSEEK_API_KEY} # openai依赖默认自动配置deepseek
       base-url: ${DEEPSEEK_BASE_URL}
       chat:
         options:
           model: deepseek-chat
+  main:
+    web-application-type: servlet # 指定为Servlet模式
 
 
 # LLM 提供商配置

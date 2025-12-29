@@ -1,16 +1,16 @@
 package com.jesus.agentsdemo;
 
-import com.jesus.agentsdemo.agent.AgentExample;
+import com.jesus.agentsdemo.agent.ExampleAgent;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class AgentExampleTest {
+public class ExampleAgentTest {
     @Resource
-    private AgentExample agentExample;
+    private ExampleAgent exampleAgent;
     @Test
     public void run() throws Exception {
-        agentExample.run();
+        exampleAgent.run();
     }
 }
