@@ -1,8 +1,13 @@
 package com.jesus.agentsdemo.config.agent;
 
 import com.alibaba.cloud.ai.graph.agent.ReactAgent;
+import com.alibaba.cloud.ai.graph.agent.hook.Hook;
+import com.alibaba.cloud.ai.graph.agent.hook.hip.HumanInTheLoopHook;
+import com.alibaba.cloud.ai.graph.agent.hook.hip.ToolConfig;
+import com.alibaba.cloud.ai.graph.agent.hook.modelcalllimit.ModelCallLimitHook;
 import com.alibaba.cloud.ai.graph.checkpoint.savers.MemorySaver;
 import com.jesus.agentsdemo.constant.LlmProviders;
+import com.jesus.agentsdemo.constant.OutputSchema;
 import com.jesus.agentsdemo.constant.SystemPrompts;
 import com.jesus.agentsdemo.format.ResponseFormat;
 import com.jesus.agentsdemo.interceptor.LogToolInterceptor;
@@ -21,6 +26,16 @@ public class WeatherAgentConfig {
 
      @Bean
      public ReactAgent weatherAgent() {
+//         // 创建 hook
+//         Hook humanInTheLoopHook = HumanInTheLoopHook.builder()
+//                 .approvalOn("get_weather_for_location", ToolConfig.builder().description("Please confirm tool execution.")
+//                         .build())
+//                 .build();
+        // 为防止无限循环，可以使用 ModelCallLimitHook 来限制模型调用次数
+         ModelCallLimitHook hook = ModelCallLimitHook.builder()
+                 .runLimit(5)  // 限制最多调用 5 次
+                 .exitBehavior(ModelCallLimitHook.ExitBehavior.ERROR)  // 超出限制时抛出异常
+                 .build();
          return ReactAgent.builder()
                  .name("weather_agent")
                  .description("This is a weather agent")
@@ -31,7 +46,9 @@ public class WeatherAgentConfig {
                          new DayTimeTool().toolCallback(),
                          new WeatherForLocationTool().toolCallback()
                  )
-                 .outputType(ResponseFormat.class)
+//                 .outputType(ResponseFormat.class)
+                 .outputSchema(OutputSchema.OUTPUT_SCHEMA_WEATHER)
+                 .hooks(hook)
                  .interceptors(new LogToolInterceptor())
                  .build();
      }
