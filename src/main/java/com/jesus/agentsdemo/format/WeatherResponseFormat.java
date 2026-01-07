@@ -1,7 +1,7 @@
 package com.jesus.agentsdemo.format;
 
 
-public class ResponseFormat {
+public class WeatherResponseFormat {
     private String punnyResponse;
     private String weatherConditions;
     private String dayTime;

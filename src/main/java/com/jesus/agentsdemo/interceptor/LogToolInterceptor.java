@@ -16,7 +16,12 @@ public class LogToolInterceptor extends ToolInterceptor {
     public ToolCallResponse interceptToolCall(ToolCallRequest request, ToolCallHandler handler) {
         log.info("ToolInterceptor: Tool {} is called!", request.getToolName());
         log.info("ToolInterceptor: Tool arguments: {}", request.getArguments());
-        return handler.call(request);
+        try {
+            return handler.call(request);
+        } catch (Exception e) {
+            return ToolCallResponse.of(request.getToolCallId(), request.getToolName(),
+                    "Tool failed: " + e.getMessage());
+        }
     }
 
     @Override

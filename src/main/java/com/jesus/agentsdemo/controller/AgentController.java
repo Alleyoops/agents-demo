@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,7 @@ public class AgentController {
         try {
             RunnableConfig runnableConfig = RunnableConfig.builder()
                     .threadId(session_id)
-                    .addMetadata("user_id", "1")
+                    .addMetadata("user_role", "superVip")// 此处添加了user_role元数据, 用于动态prompt
                     .build();
 //            AssistantMessage response = weatherAgent.call(query, runnableConfig);
 //            return response.getText();
@@ -39,10 +38,12 @@ public class AgentController {
             Optional<OverAllState> result = weatherAgent.invoke(query, runnableConfig);
             if (result.isPresent()) {
                 OverAllState overAllState = result.get();
-                return overAllState.toString();
+                Optional<Message> messages = overAllState.value("messages");
+                List<Message> messageList = (List<Message>)messages.get();
+                return messageList.toString();
             }
             return "No response";
-        } catch (GraphRunnerException e) {
+        } catch (Exception e) {
             // 添加异常处理逻辑
             return "Error: " + e.getMessage();
         }

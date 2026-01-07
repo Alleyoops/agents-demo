@@ -6,8 +6,8 @@ spring:
       api-key: ${AI_DASHSCOPE_API_KEY}
       chat:
         options:
-          temperature: 0.5
-          max-tokens: 1000
+          temperature: 0.5 # 模型温度：作用是改变模型输出的随机性，取值范围[0,1]，越小越 deterministic
+          max-tokens: 1000 # 模型生成的最大长度
           model: qwen-plus # DashScopeChatModel.DEFAULT_MODEL_NAME
     openai:
       api-key: ${DEEPSEEK_API_KEY} # openai依赖默认自动配置deepseek

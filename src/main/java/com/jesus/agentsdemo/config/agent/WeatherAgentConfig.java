@@ -1,19 +1,17 @@
 package com.jesus.agentsdemo.config.agent;
 
 import com.alibaba.cloud.ai.graph.agent.ReactAgent;
-import com.alibaba.cloud.ai.graph.agent.hook.Hook;
-import com.alibaba.cloud.ai.graph.agent.hook.hip.HumanInTheLoopHook;
-import com.alibaba.cloud.ai.graph.agent.hook.hip.ToolConfig;
 import com.alibaba.cloud.ai.graph.agent.hook.modelcalllimit.ModelCallLimitHook;
 import com.alibaba.cloud.ai.graph.checkpoint.savers.MemorySaver;
+import com.alibaba.cloud.ai.graph.checkpoint.savers.redis.RedisSaver;
 import com.jesus.agentsdemo.constant.LlmProviders;
 import com.jesus.agentsdemo.constant.OutputSchema;
 import com.jesus.agentsdemo.constant.SystemPrompts;
-import com.jesus.agentsdemo.format.ResponseFormat;
+import com.jesus.agentsdemo.interceptor.DynamicPromptWeatherInterceptor;
 import com.jesus.agentsdemo.interceptor.LogToolInterceptor;
 import com.jesus.agentsdemo.llm.LlmClientRegistry;
-import com.jesus.agentsdemo.tools.DayTimeTool;
-import com.jesus.agentsdemo.tools.WeatherForLocationTool;
+import com.jesus.agentsdemo.tool.DayTimeTool;
+import com.jesus.agentsdemo.tool.WeatherForLocationTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,10 +44,10 @@ public class WeatherAgentConfig {
                          new DayTimeTool().toolCallback(),
                          new WeatherForLocationTool().toolCallback()
                  )
-//                 .outputType(ResponseFormat.class)
+//                 .outputType(WeatherResponseFormat.class) //推荐使用 outputType
                  .outputSchema(OutputSchema.OUTPUT_SCHEMA_WEATHER)
                  .hooks(hook)
-                 .interceptors(new LogToolInterceptor())
+                 .interceptors(new LogToolInterceptor(),new DynamicPromptWeatherInterceptor())
                  .build();
      }
 }

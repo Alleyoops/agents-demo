@@ -1,4 +1,4 @@
-package com.jesus.agentsdemo.tools;
+package com.jesus.agentsdemo.tool;
 
 import org.springframework.ai.chat.model.ToolContext;
 import org.springframework.ai.tool.ToolCallback;
